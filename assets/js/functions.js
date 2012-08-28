@@ -8,12 +8,15 @@ function positionAcquired(position) {
 		var current = data.current_observation;
 		var forecast = data.forecast.txt_forecast;
 		
-		console.log(current);
-		
 		// todays conditions
-		
 		// observed at
 		tag = $("<p></p>").html( "For " + current.display_location.city + ", " + current.display_location.state_name);
+		
+		if( position.default === true )
+		{
+			tag.append(" (location not dynamic)");
+		}
+		
 		$(tag).attr("id", "location");
 		$("#main section").before(tag);
 		
