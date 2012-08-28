@@ -1,8 +1,13 @@
 function positionAcquired(position) {
 	var lat = position.coords.latitude;
 	var long = position.coords.longitude;
+	
+	var localApi = "/api/index.php/weather/data/";
+	var ecApi = "http://54.245.106.49/easy-weather/api/index.php/weather/data/";
+	var liveApi = "http://weather.keepiteasy.net/api/index.php/weather/data/";
 
-	$.getJSON("/api/index.php/weather/data/" + lat + "/" + long, function(data){
+	//$.getJSON("/api/index.php/weather/data/" + lat + "/" + long, function(data){
+	$.getJSON(ecApi + lat + "/" + long, function(data){
 		$("#loading").hide();
 	
 		var current = data.current_observation;

@@ -9,6 +9,7 @@ class Weather extends CI_Controller {
 	
 	public function data($lat, $long)
 	{
+		header('Access-Control-Allow-Origin: *');
 		$this->load->model('weather_model');
 		$data['conditions'] = $this->weather_model->load_current_conditions($lat, $long);
 		echo $data['conditions'];
