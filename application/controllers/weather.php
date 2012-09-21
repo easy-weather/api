@@ -63,7 +63,7 @@ class Weather extends CI_Controller
 		
 		$this->output->set_output($source);
 		
-		$response = file_get_contents($source);
+		/*$response = file_get_contents($source);
 		
 		// create data object
 		$data = array(
@@ -72,6 +72,6 @@ class Weather extends CI_Controller
 		
 		// load view
 		$content = $this->load->view('forecast', $data, true);
-		$this->output->append_output($content);
+		$this->output->append_output($content);*/
 	}
 }
