@@ -58,7 +58,7 @@ class Weather extends CI_Controller
 		{
 			$sessionData = $this->session->all_userdata();
 			$source = str_replace("LAT,LONG", "", $source);
-			$source += $sessionData['ip_address']);
+			$source += $sessionData['ip_address'];
 		}
 		
 		$this->output->set_output($source);
