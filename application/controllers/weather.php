@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Weather extends CI_Controller 
-{
+{		
 	public function __construct()
 	{
 		parent::__construct();
@@ -41,23 +41,38 @@ class Weather extends CI_Controller
 	
 	public function forecast($lat = null, $long = null)
 	{
+		// set api url and key
+		$url = 'http://api.wunderground.com/api/API_KEY/conditions/forecast/alert/q/LAT,LONG.json';
+		$key = 'f30ae1d34ad67d49';
+		
+		// start building url
+		$source = str_replace("API_KEY", $key, $url);
+		
 		// check if lat and long are set
 		if( $lat != null && $long != null)
 		{
-			// create data object
-			$data = array(
-				"lat" => $lat,
-				"long" => $long,
-				"response" => "json"
-			);
-			
-			$content = $this->load->view('forecast', $data, true);
-			$this->output->append_output($content);
+			$source = str_replace("LAT", $lat, $source);
+			$source = str_replace("LONG", $long, $source);
 		}
 		else
 		{
-			// ToDo: create view for errors
-			$this->output->set_output("Lat and Long must be provided.");
+			$sessionData = $this->session->all_userdata();
+			$source = str_replace("LAT", "", $source);
+			$source = str_replace("LONG", "", $source);
+			$source = str_replace(".json", $sessionData['ip_address'], $source);
 		}
+		
+		$this->output->set_output($source);
+		
+		$response = file_get_contents($source);
+		
+		// create data object
+		$data = array(
+			"json" => $response
+		);
+		
+		// load view
+		$content = $this->load->view('forecast', $data, true);
+		$this->output->append_output($content);
 	}
 }
