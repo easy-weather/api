@@ -28,11 +28,6 @@ class Weather extends CI_Controller
 		// finally print to screen
 		echo $output;
 	}
-	
-	public function session()
-	{
-		$this->output->set_output(json_encode($this->session->all_userdata()));
-	}
 
 	public function index()
 	{
@@ -42,7 +37,7 @@ class Weather extends CI_Controller
 	public function forecast($lat = null, $long = null)
 	{
 		// set api url and key
-		$url = 'http://api.wunderground.com/api/API_KEY/conditions/forecast/q/LAT,LONG.json';
+		$url = 'http://api.wunderground.com/api/API_KEY/forecast/conditions/q/LAT,LONG.json';
 		$key = 'f30ae1d34ad67d49';
 		
 		// start building url
@@ -54,16 +49,14 @@ class Weather extends CI_Controller
 			$source = str_replace("LAT", $lat, $source);
 			$source = str_replace("LONG", $long, $source);
 		}
+		// acquire IP from session and attempt to get weather
 		else
 		{
 			$sessionData = $this->session->all_userdata();
-			$source = str_replace("LAT,LONG", "", $source);
-			$source .= "?geo_ip=" . $sessionData['ip_address'];
+			$source = str_replace("LAT,LONG.json", "autoip.json?geo_ip=" . $sessionData['ip_address'], $source);
 		}
 		
-		$this->output->set_output($source);
-		
-		/*$response = file_get_contents($source);
+		$response = file_get_contents($source);
 		
 		// create data object
 		$data = array(
@@ -72,6 +65,6 @@ class Weather extends CI_Controller
 		
 		// load view
 		$content = $this->load->view('forecast', $data, true);
-		$this->output->append_output($content);*/
+		$this->output->append_output($content);
 	}
 }
