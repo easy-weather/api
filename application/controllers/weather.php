@@ -7,7 +7,7 @@ class Weather extends CI_Controller
 		parent::__construct();
 		
 		// enable caching for 12 hours
-		//$this->output->cache(720);
+		$this->output->cache(720);
 		
 		// set header data
 		$this->output->set_content_type('application/json');
