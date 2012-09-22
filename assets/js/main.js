@@ -1,44 +1,31 @@
 require([
   "jquery",
   "less",
-  "modernizr",
   "functions"
 ], function($) {
 	$(document).ready(function(){
-	
-		// fake a position object incase location cannot be acquired
-		var defaultPosition = {
-			coords : {
-				latitude : 44.6472763,
-				longitude : -63.57450179999999
-			},
-			default : true
-		};
-	
-		// check if client supports geolocation
-		if(Modernizr.geolocation)
-		{
-			navigator.geolocation.getCurrentPosition(positionAcquired, function(e) {
-				if (e.code = e.PERMISSION_DENIED)
-				{
-					console.log("geolocation permission denied, using default object");
-					positionAcquired(defaultPosition);
-				}
+		$("#main").fadeIn(1000);
+		
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(positionAcquired, function(){
+				$("#loading").hide();
+				
+				$("#main").append($("<h3></h3>").html("We can't quite find where you are... Perhaps your in space? I don't think the internet works in space..."));
 			});
 		}
 		else
 		{
-			console.log("geolocation not supported, using default object");
-			positionAcquired(defaultPosition);
+			$("#loading").hide();
+			$("#main").append($("<h2></h2>").html("Unfortunitly we can't decide if your device supports geo-location based services. Check back later, we may have a decision for you."));
 		}
 		
-		// listener for site header
-		$("#siteHeader a").unbind().click(function(e) {
+		$("#siteHeader a").click(function(event) {
 			$("#versionLog").show();
-			e.PreventDefault();
+			
+			event.PreventDefault();
 		});
 		
-		$("#versionLog").unbind().click(function(){
+		$("#versionLog").click(function(){
 			$(this).hide();
 		});
 	});
