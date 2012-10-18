@@ -17,6 +17,9 @@
 		}
 	}
 	
+	// remove first item from forecast
+	array_shift($forecast);
+	
 	// encode data for final output
 	echo json_encode($forecast);
 ?>
