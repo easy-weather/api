@@ -18,6 +18,6 @@
 		"time" => $data->current_observation->observation_time
 	);
 	
-	// encode data for final output
-	echo json_encode($conditions);
+	$json = json_encode($conditions);
+	echo isset($_GET['callback']) ? "{$_GET['callback']}($json)" : $json;
 ?>
