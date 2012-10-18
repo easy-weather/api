@@ -4,5 +4,10 @@ WEATHER.Collections.Conditions = Backbone.Collection.extend({
 	
 	initialize: function(lat, long) {
 		this.url += lat + "/" + long;
+	},
+	
+	sync: function(method, model, options) {
+		options.dataType = "jsonp";
+		return Backbone.sync(method, model, options);
 	}
 });
