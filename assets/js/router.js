@@ -120,19 +120,5 @@ window.Router = Backbone.Router.extend({
 		loadingView.render();
 		
 		$("#main section").html(loadingView.el);
-		
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(function(pos) {
-				this.pos = pos;
-			}, function() {
-				this.error = true;
-				$("#main").html($("<h3></h3>").html("We can't quite find where you are... Perhaps your in space? If you are, whats the weather like?"));
-			});
-		}
-		else
-		{
-			this.error = true;
-			$("#main").html($("<h3></h3>").html("Unfortunitly we can't decide if your device supports geo-location based services. Check back later, we may have a decision for you."));	
-		}
 	}
 });
