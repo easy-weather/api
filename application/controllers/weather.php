@@ -33,11 +33,89 @@ class Weather extends CI_Controller
 	{
 		$this->output->set_output("{'response' : 'good'}");
 	}
+
+	public function full($lat, $long)
+	{
+		// set api url and key
+		$url = 'http://api.wunderground.com/api/API_KEY/conditions/forecast/q/LAT,LONG.json';
+		$key = 'f30ae1d34ad67d49';
+		
+		// start building url
+		$source = str_replace("API_KEY", $key, $url);
+		
+		// check if lat and long are set
+		if( $lat != null && $long != null)
+		{
+			$source = str_replace("LAT", $lat, $source);
+			$source = str_replace("LONG", $long, $source);
+		}
+		// acquire IP from session and attempt to get weather
+		else
+		{
+			$sessionData = $this->session->all_userdata();
+			$source = str_replace("LAT,LONG.json", "autoip.json?geo_ip=" . $sessionData['ip_address'], $source);
+		}
+		
+		$response = file_get_contents($source);
+		
+		// create data object
+		$data = array(
+			"json" => $response
+		);
+		
+		$this->output->append_output("{");
+		
+		$this->output->append_output('"conditions": ');
+		// load view
+		$content = $this->load->view('conditions', $data, true);
+		$this->output->append_output($content);	
+		
+		$this->output->append_output(",");
+		
+		$this->output->append_output('"forecast": ');
+		$content = $this->load->view('forecast', $data, true);
+		$this->output->append_output($content);	
+		$this->output->append_output("}");
+	}
+	
+	public function conditions($lat = null, $long = null)
+	{
+		// set api url and key
+		$url = 'http://api.wunderground.com/api/API_KEY/conditions/q/LAT,LONG.json';
+		$key = 'f30ae1d34ad67d49';
+		
+		// start building url
+		$source = str_replace("API_KEY", $key, $url);
+		
+		// check if lat and long are set
+		if( $lat != null && $long != null)
+		{
+			$source = str_replace("LAT", $lat, $source);
+			$source = str_replace("LONG", $long, $source);
+		}
+		// acquire IP from session and attempt to get weather
+		else
+		{
+			$sessionData = $this->session->all_userdata();
+			$source = str_replace("LAT,LONG.json", "autoip.json?geo_ip=" . $sessionData['ip_address'], $source);
+		}
+		
+		$response = file_get_contents($source);
+		
+		// create data object
+		$data = array(
+			"json" => $response
+		);
+		
+		// load view
+		$content = $this->load->view('conditions', $data, true);
+		$this->output->append_output($content);	
+	}
 	
 	public function forecast($lat = null, $long = null)
 	{
 		// set api url and key
-		$url = 'http://api.wunderground.com/api/API_KEY/forecast/conditions/q/LAT,LONG.json';
+		$url = 'http://api.wunderground.com/api/API_KEY/forecast/q/LAT,LONG.json';
 		$key = 'f30ae1d34ad67d49';
 		
 		// start building url
