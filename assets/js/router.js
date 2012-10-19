@@ -23,7 +23,7 @@ window.Router = Backbone.Router.extend({
 						success: function() {
 							// render view and update #main
 							conditionsView.render();
-							$("#main section").html(conditionsView.el);
+							$("#content").html(conditionsView.el);
 						}
 					});
 					
@@ -36,7 +36,7 @@ window.Router = Backbone.Router.extend({
 						success: function() {
 							// render view and update #main
 							forecastView.render();
-							$("#main section").append(forecastView.el);
+							$("#content").append(forecastView.el);
 						}
 					});
 				}, function(){
@@ -68,7 +68,7 @@ window.Router = Backbone.Router.extend({
 						success: function() {
 							// render view and update #main
 							conditionsView.render();
-							$("#main section").html(conditionsView.el);
+							$("#content").html(conditionsView.el);
 						}
 					});
 				}, function(){
@@ -99,7 +99,7 @@ window.Router = Backbone.Router.extend({
 						success: function() {
 							// render view and update #main
 							forecastView.render();
-							$("#main section").html(forecastView.el);
+							$("#content").html(forecastView.el);
 						}
 					});
 				}, function(){
@@ -119,6 +119,6 @@ window.Router = Backbone.Router.extend({
 		var loadingView = new WEATHER.Views.Loading();
 		loadingView.render();
 		
-		$("#main section").html(loadingView.el);
+		$("#content").html(loadingView.el);
 	}
 });

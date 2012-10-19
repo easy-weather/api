@@ -32,20 +32,15 @@ body {
   font-family: 'Open Sans', Verdana, Helvetica, sans-serif;
   width: auto;
   font-size: 16px;
-  background: #000000;
-  background: -moz-linear-gradient(top, #1e5799 0%, #070405 100%);
-  /* FF3.6+ */
-
-  background: -webkit-linear-gradient(top, #1e5799 0%, #070405 100%);
-  /* Chrome10+,Safari5.1+ */
-
-  background: linear-gradient(to bottom, #1e5799 0%, #070405 100%);
-  /* W3C */
-
-  background-repeat: repeat-x;
-  background-color: #000000;
+  background: #EEEEEE;
+  color: #555;
   /* Old browsers */
 }
+body.dark {
+  background: #000000;	
+  color: #999;
+}
+
 body h1,
 body h2,
 body h3,
@@ -53,11 +48,21 @@ body h4,
 body h5 {
   text-align: center;
   margin-bottom: 0px;
-  text-shadow: 2px 2px 20px #aaaaaa;
+  color: #444;
+  text-shadow: 2px 2px 20px #AAA;
   font-family: 'Bevan', Georgia, serif;
-  font-weight: 400;
-  text-transform: uppercase;
+  font-weight: 400;  text-transform: uppercase;
 }
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5 {
+  color: #666;
+  text-shadow: 2px 2px 20px #222;
+}
+
 a {
   color: #000000;
   text-decoration: none;
@@ -66,34 +71,31 @@ a {
   text-align: center;
   margin-top: 0px;
 }
-/*body.dark {
-	background-color: #111111;
-}
 
-body.gray {
-	background-color: #CCCCCC;
-}
-
-body.blue {
-	background-color: #47CCF5;
-}*/
 #main {
   display: none;
   position: relative;
-  margin: -300px auto 10px;
-  top: 50%;
+  margin: 0 auto 10px;  
   max-width: 940px;
+  max-height: 670px;
   background-color: #FFFFFF;
   padding: 10px;
-  -webkit-box-shadow: 5px 5px 10px #000;
-  box-shadow: 5px 5px 10px #000;
+  -webkit-box-shadow: 5px 5px 10px #999;
+  box-shadow: 5px 5px 10px #999;
   -webkit-border-radius: 4px;
   border-radius: 4px;
 }
+
+body.dark #main {
+	background-color: #333333;
+  -webkit-box-shadow: 5px 5px 10px #000;
+  box-shadow: 5px 5px 10px #000;
+}
+
 section {
   display: inline;
   float: left;
-  width: 64.58333333333334%;
+  width: 95%;
   margin: 0 1.0416666666666665%;
   margin: 0 auto;
   float: none;
@@ -107,6 +109,23 @@ section #conditionsContainer {
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
+
+#conditionsTime {
+	width: 100%;
+	display: block;
+	clear: both;
+}
+
+#conditionsContainer section {
+	float: left;
+	width: 20%;
+	margin: 20px 0px;
+}
+
+#conditionsContainer #conditionsMain {
+	margin-left: 28%;
+}
+
 section #conditionsContainer article {
   margin: 2px 0px;
 }
