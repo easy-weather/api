@@ -1,0 +1,1 @@
+WEATHER.Models.App = Backbone.Model.extend({})
