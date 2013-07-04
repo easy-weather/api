@@ -3,6 +3,7 @@
   "description": "A Node REST API for getting current Weather and Foreast",
   "version": "2.0.0",
   "dependencies": {
+  	"coffee-script": "1.1.2",
     "express": "~3.2.6",
     "request": "~2.21.0"
   }
