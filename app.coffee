@@ -71,5 +71,6 @@ app.get '/:type/:lat/:long', (req,res) ->
 app.get '*', (req, res) ->
 	res.send "Go away... Go away now!", 404
 
-app.listen process.env.PORT || 4730
-console.log "listening on port 4730"
+port = process.env.PORT || 5000
+app.listen port
+console.log "listening on port " + port
