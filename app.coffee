@@ -3,8 +3,10 @@ express = require 'express'
 http = require 'http'
 app = express()
 
-config = require './config.js'
-console.log config
+config =
+	api: process.env.WU_API
+
+console.log config.api
 
 sendData = (body, res)->
 	res.type('text/json');
