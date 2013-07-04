@@ -7,4 +7,4 @@ Run 'npm install' to get all the necessary Node Modules installed, and then sign
 
 		WU_API=KEYGOESHERE
 
-Once that is setup you can run it like any other Node app and visit http://localhost:5000/forecast/44.7315035/-63.659654 or http://localhost:5000/conditions/44.7315035/-63.659654 to test.
+Once that is setup you can run it like any other Node app and visit http://localhost:5000/forecast/44.7315035/-63.659654/ or http://localhost:5000/conditions/44.7315035/-63.659654/ to test.
