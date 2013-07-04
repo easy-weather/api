@@ -1,6 +1,7 @@
 request = require 'request'
 express = require 'express'
 http = require 'http'
+_ = require 'underscore'
 app = express()
 
 config =
@@ -12,8 +13,29 @@ sendData = (body, res)->
 	res.type('text/json');
 	res.send body
 
-processConditions = (body, res) ->
-	body = body.current_observation
+processForecast = (data, res) ->
+	body = data.forecast
+	forecast = []
+
+	_.each body.txt_forecast.forecastday, (element, i) ->
+		isNight = element.title.indexOf "Night", 0
+
+		if isNight == -1
+			day = 
+				day: element.title
+				icon: element.icon
+				text: element.fcttext_metric
+				text_f: element.fcttext
+
+		forecast.push day if isNight == -1
+	, this
+
+	forecast.splice 0, 1
+
+	sendData data, res
+
+processConditions = (data, res) ->
+	body = data.current_observation
 
 	conditions = 
 		city: body.display_location.city
@@ -56,6 +78,7 @@ getWeather = (type, lat, long, res) ->
 		response.on 'end', () ->
 			switch type
 				when 'conditions' then processConditions JSON.parse(body), res
+				when "forecast" then processForecast JSON.parse(body), res
 
 app.get '/:type/:lat/:long', (req,res) ->
 	type = req.params.type
@@ -65,7 +88,7 @@ app.get '/:type/:lat/:long', (req,res) ->
 	console.log type + " request from LAT: " + lat + " LONG: " + long
 
 	switch type
-		when 'conditions' then getWeather type, lat, long, res
+		when 'conditions', 'forecast' then getWeather type, lat, long, res
 		else res.send "Go away... Go away now!", 404
 
 app.get '*', (req, res) ->

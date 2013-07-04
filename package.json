@@ -5,7 +5,8 @@
   "dependencies": {
   	"coffee-script": "1.1.2",
     "express": "~3.2.6",
-    "request": "~2.21.0"
+    "request": "~2.21.0",
+    "underscore":"~1.4.4"
   },
   "engines": {
     "node": "0.10.x",
