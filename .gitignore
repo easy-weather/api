@@ -6,6 +6,12 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.js
+*.sublime-project
+*.sublime-workspace
+*.json
+.env
+node_modules/
 
 pids
 logs
