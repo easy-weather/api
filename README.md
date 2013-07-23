@@ -1,4 +1,4 @@
-Easy-Weather-API-V.2
+Easy Weather API V2
 ====================
 
 Easy Weather (http://weather.keepiteasy.net/) is my pet project, and currently consists of an HTML5 Web App built in Backbone powered by an outdated PHP Rest service and Weather Underground. This specifically is a complete re-write using Node JS.
