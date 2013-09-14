@@ -2,12 +2,19 @@ request = require 'request'
 express = require 'express'
 http = require 'http'
 _ = require 'underscore'
+redis = require 'redis-node'
+crypto = require 'crypto'
+
 app = express()
+client = redis.createClient()
 
 config =
 	api: process.env.WU_API
 
-console.log config.api
+requestType = "conditions"
+lat = 0
+long = 0
+key = ""
 
 sendData = (body, res)->
 	res.type('text/json');
@@ -21,7 +28,7 @@ processForecast = (data, res) ->
 		isNight = element.title.indexOf "Night", 0
 
 		if isNight == -1
-			day = 
+			day =
 				day: element.title
 				icon: element.icon
 				text: element.fcttext_metric
@@ -37,7 +44,7 @@ processForecast = (data, res) ->
 processConditions = (data, res) ->
 	body = data.current_observation
 
-	conditions = 
+	conditions =
 		city: body.display_location.city
 		state: body.display_location.state_name
 		icon: body.icon
@@ -62,23 +69,41 @@ processConditions = (data, res) ->
 
 	sendData conditions, res
 
-getWeather = (type, lat, long, res) ->
-	url = "http://api.wunderground.com/api/APIKEY/TYPE/pws:0/q/LAT,LONG.json"
-	url = url.replace "APIKEY", config.api
-	url = url.replace "LAT", lat
-	url = url.replace "LONG", long
-	url = url.replace "TYPE", type
+showGet = (err, redisData, res) ->
+	if err
+		console.log err
+		return fallse
 
-	http.get url, (response) ->
-		body = ''
+	if redisData
+		switch requestType
+			when 'conditions' then processConditions JSON.parse(redisData), res
+			when "forecast" then processForecast JSON.parse(redisData), res
+	else
+		url = "http://api.wunderground.com/api/APIKEY/TYPE/pws:0/q/LAT,LONG.json"
+		url = url.replace "APIKEY", config.api
+		url = url.replace "LAT", lat
+		url = url.replace "LONG", long
+		url = url.replace "TYPE", requestType
 
-		response.on 'data', (chunk) ->
-			body += chunk
+		http.get url, (response) ->
+			body = ''
 
-		response.on 'end', () ->
-			switch type
-				when 'conditions' then processConditions JSON.parse(body), res
-				when "forecast" then processForecast JSON.parse(body), res
+			response.on 'data', (chunk) ->
+				body += chunk
+
+			response.on 'end', () ->
+				client.set key, body
+				client.expire key, 60
+
+				switch requestType
+					when 'conditions' then processConditions JSON.parse(body), res
+					when "forecast" then processForecast JSON.parse(body), res
+
+getWeather = (res) ->
+	key = crypto.createHash('sha1').update(lat+long).digest("hex")
+	console.log key
+	client.get key, (err, redisData) ->
+		showGet err, redisData, res
 
 app.get '/:type/:lat/:long', (req,res) ->
 	type = req.params.type
@@ -86,9 +111,10 @@ app.get '/:type/:lat/:long', (req,res) ->
 	long = req.params.long
 
 	console.log type + " request from LAT: " + lat + " LONG: " + long
+	requestType = type
 
-	switch type
-		when 'conditions', 'forecast' then getWeather type, lat, long, res
+	switch requestType
+		when 'conditions', 'forecast' then getWeather res
 		else res.send "Go away... Go away now!", 404
 
 app.get '*', (req, res) ->
