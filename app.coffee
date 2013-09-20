@@ -15,31 +15,38 @@ requestType = "conditions"
 lat = 0
 long = 0
 key = ""
+callback = ""
 
 sendData = (body, res)->
 	res.type('text/json');
-	res.send body
+	if callback
+		res.send callback + "(" + JSON.stringify(body) + ")"
+	else
+		res.send JSON.stringify(body)
 
 processForecast = (data, res) ->
 	body = data.forecast
 	forecast = []
 
-	_.each body.txt_forecast.forecastday, (element, i) ->
-		isNight = element.title.indexOf "Night", 0
+	try
+		_.each body.txt_forecast.forecastday, (element, i) ->
+			isNight = element.title.indexOf "Night", 0
 
-		if isNight == -1
-			day =
-				day: element.title
-				icon: element.icon
-				text: element.fcttext_metric
-				text_f: element.fcttext
+			if isNight == -1
+				day =
+					day: element.title
+					icon: element.icon
+					text: element.fcttext_metric
+					text_f: element.fcttext
 
-		forecast.push day if isNight == -1
-	, this
+			forecast.push day if isNight == -1
+		, this
 
-	forecast.splice 0, 1
+		forecast.splice 0, 1
 
-	sendData data, res
+		sendData forecast, res
+	catch err
+		res.end "Oops..."
 
 processConditions = (data, res) ->
 	body = data.current_observation
@@ -69,7 +76,7 @@ processConditions = (data, res) ->
 
 	sendData conditions, res
 
-showGet = (err, redisData, res) ->
+###showGet = (err, redisData, res) ->
 	if err
 		console.log err
 		return fallse
@@ -93,27 +100,51 @@ showGet = (err, redisData, res) ->
 
 			response.on 'end', () ->
 				client.set key, body
-				client.expire key, 60
+				client.expire key, 360
 
 				switch requestType
 					when 'conditions' then processConditions JSON.parse(body), res
-					when "forecast" then processForecast JSON.parse(body), res
+					when "forecast" then processForecast JSON.parse(body), res###
 
 getWeather = (res) ->
-	key = crypto.createHash('sha1').update(lat+long).digest("hex")
-	console.log key
+	###key = requestType + crypto.createHash('sha1').update(lat+long).digest("hex")
 	client.get key, (err, redisData) ->
-		showGet err, redisData, res
+		showGet err, redisData, res###
+	url = "http://api.wunderground.com/api/APIKEY/TYPE/pws:0/q/LAT,LONG.json"
+	url = url.replace "APIKEY", config.api
+	url = url.replace "LAT", lat
+	url = url.replace "LONG", long
+	url = url.replace "TYPE", @requestType
+
+	#console.log url
+	_rt = @requestType
+
+	http.get url, (response) ->
+		body = ''
+
+		response.on 'data', (chunk) ->
+			body += chunk
+
+		response.on 'end', () ->
+			#client.set key, body
+			#client.expire key, 360
+
+			#console.log requestType
+
+			switch _rt
+				when 'conditions' then processConditions JSON.parse(body), res
+				when "forecast" then processForecast JSON.parse(body), res
 
 app.get '/:type/:lat/:long', (req,res) ->
+	callback = req.query.callback if req.query.callback
+
 	type = req.params.type
 	lat = req.params.lat
 	long = req.params.long
 
-	console.log type + " request from LAT: " + lat + " LONG: " + long
-	requestType = type
+	@requestType = type
 
-	switch requestType
+	switch @requestType
 		when 'conditions', 'forecast' then getWeather res
 		else res.send "Go away... Go away now!", 404
 
@@ -122,4 +153,3 @@ app.get '*', (req, res) ->
 
 port = process.env.PORT || 5000
 app.listen port
-console.log "listening on port " + port
