@@ -1,6 +1,7 @@
 {
   "name": "easy-eather-api",
   "description": "A Node REST API for getting current Weather and Foreast",
+  "main": "app.coffee",
   "version": "2.0.0",
   "dependencies": {
   	"coffee-script": "1.1.2",

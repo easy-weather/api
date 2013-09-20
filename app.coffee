@@ -1,17 +1,22 @@
+url = require 'url'
 request = require 'request'
 express = require 'express'
 http = require 'http'
 _ = require 'underscore'
 app = express()
 
+callback = ""
 config =
 	api: process.env.WU_API
 
-console.log config.api
-
 sendData = (body, res)->
 	res.type('text/json');
-	res.send body
+	output = body
+
+	if @callback != ""
+		output = @callback + "(" + body + ")"
+
+	res.end output
 
 processForecast = (data, res) ->
 	body = data.forecast
@@ -21,7 +26,7 @@ processForecast = (data, res) ->
 		isNight = element.title.indexOf "Night", 0
 
 		if isNight == -1
-			day = 
+			day =
 				day: element.title
 				icon: element.icon
 				text: element.fcttext_metric
@@ -32,12 +37,12 @@ processForecast = (data, res) ->
 
 	forecast.splice 0, 1
 
-	sendData data, res
+	sendData JSON.stringify(data), res
 
 processConditions = (data, res) ->
 	body = data.current_observation
 
-	conditions = 
+	conditions =
 		city: body.display_location.city
 		state: body.display_location.state_name
 		icon: body.icon
@@ -60,16 +65,16 @@ processConditions = (data, res) ->
 		windchill_f: body.windchill_f
 		time: body.observation_time
 
-	sendData conditions, res
+	sendData JSON.stringify(conditions), res
 
 getWeather = (type, lat, long, res) ->
-	url = "http://api.wunderground.com/api/APIKEY/TYPE/pws:0/q/LAT,LONG.json"
-	url = url.replace "APIKEY", config.api
-	url = url.replace "LAT", lat
-	url = url.replace "LONG", long
-	url = url.replace "TYPE", type
+	host = "http://api.wunderground.com/api/APIKEY/TYPE/pws:0/q/LAT,LONG.json"
+	host = host.replace "APIKEY", config.api
+	host = host.replace "LAT", lat
+	host = host.replace "LONG", long
+	host = host.replace "TYPE", type
 
-	http.get url, (response) ->
+	http.get host, (response) ->
 		body = ''
 
 		response.on 'data', (chunk) ->
@@ -81,6 +86,9 @@ getWeather = (type, lat, long, res) ->
 				when "forecast" then processForecast JSON.parse(body), res
 
 app.get '/:type/:lat/:long', (req,res) ->
+	url_parts = url.parse req.url, true
+	@callback = url_parts.query.callback
+
 	type = req.params.type
 	lat = req.params.lat
 	long = req.params.long
