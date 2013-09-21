@@ -2,12 +2,10 @@ request = require 'request'
 express = require 'express'
 http = require 'http'
 _ = require 'underscore'
-redis = require 'redis-node'
-crypto = require 'crypto'
 
 app = express()
-client = redis.createClient()
 
+callback = ""
 config =
 	api: process.env.WU_API
 
@@ -31,7 +29,6 @@ processForecast = (data, res) ->
 	try
 		_.each body.txt_forecast.forecastday, (element, i) ->
 			isNight = element.title.indexOf "Night", 0
-
 			if isNight == -1
 				day =
 					day: element.title
@@ -43,7 +40,6 @@ processForecast = (data, res) ->
 		, this
 
 		forecast.splice 0, 1
-
 		sendData forecast, res
 	catch err
 		res.end "Oops..."
@@ -76,47 +72,13 @@ processConditions = (data, res) ->
 
 	sendData conditions, res
 
-###showGet = (err, redisData, res) ->
-	if err
-		console.log err
-		return fallse
-
-	if redisData
-		switch requestType
-			when 'conditions' then processConditions JSON.parse(redisData), res
-			when "forecast" then processForecast JSON.parse(redisData), res
-	else
-		url = "http://api.wunderground.com/api/APIKEY/TYPE/pws:0/q/LAT,LONG.json"
-		url = url.replace "APIKEY", config.api
-		url = url.replace "LAT", lat
-		url = url.replace "LONG", long
-		url = url.replace "TYPE", requestType
-
-		http.get url, (response) ->
-			body = ''
-
-			response.on 'data', (chunk) ->
-				body += chunk
-
-			response.on 'end', () ->
-				client.set key, body
-				client.expire key, 360
-
-				switch requestType
-					when 'conditions' then processConditions JSON.parse(body), res
-					when "forecast" then processForecast JSON.parse(body), res###
-
 getWeather = (res) ->
-	###key = requestType + crypto.createHash('sha1').update(lat+long).digest("hex")
-	client.get key, (err, redisData) ->
-		showGet err, redisData, res###
 	url = "http://api.wunderground.com/api/APIKEY/TYPE/pws:0/q/LAT,LONG.json"
 	url = url.replace "APIKEY", config.api
 	url = url.replace "LAT", lat
 	url = url.replace "LONG", long
 	url = url.replace "TYPE", @requestType
 
-	#console.log url
 	_rt = @requestType
 
 	http.get url, (response) ->
@@ -126,11 +88,6 @@ getWeather = (res) ->
 			body += chunk
 
 		response.on 'end', () ->
-			#client.set key, body
-			#client.expire key, 360
-
-			#console.log requestType
-
 			switch _rt
 				when 'conditions' then processConditions JSON.parse(body), res
 				when "forecast" then processForecast JSON.parse(body), res
