@@ -1,9 +1,11 @@
 request = require 'request'
 express = require 'express'
+cors = require 'cors'
 http = require 'http'
 _ = require 'underscore'
 
 app = express()
+app.use cors()
 
 callback = ""
 config =
