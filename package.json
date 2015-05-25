@@ -4,15 +4,27 @@
   "main": "app.coffee",
   "version": "2.0.0",
   "dependencies": {
-    "coffee-script": "1.1.2",
+    "cors": "^2.6.0",
     "express": "~3.2.6",
-    "request": "~2.21.0",
-    "underscore": "~1.4.4",
-    "crypto": "0.0.3",
-    "redis-node": "~0.4.0"
+    "redis-node": "~0.4.0",
+    "request": "~2.55.0",
+    "underscore": "~1.8.0"
   },
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.x"
-  }
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "coffee-script": "1.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/easy-weather/api.git"
+  },
+  "author": "Jeffrey Hann <jeffhann@gmail.com> (jeffreyhann.ca)",
+  "bugs": {
+    "url": "https://github.com/easy-weather/api/issues"
+  },
+  "homepage": "http://weather.keepiteasy.net"
 }
