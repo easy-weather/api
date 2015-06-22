@@ -1,10 +1,10 @@
-[![GitHub tag](https://img.shields.io/github/tag/fear-the-dice/auth.svg)](https://github.com/easy-weather/api/tags)
-[![GitHub issues](https://img.shields.io/github/issues/fear-the-dice/auth.svg)](https://github.com/easy-weather/api/issues)
-[![Coverage Status](https://coveralls.io/repos/easy-weather/api/badge.svg)](https://coveralls.io/r/fear-the-dice/auth)
+[![GitHub tag](https://img.shields.io/github/tag/easy-weather/api.svg)](https://github.com/easy-weather/api/tags)
+[![GitHub issues](https://img.shields.io/github/issues/easy-weather/api.svg)](https://github.com/easy-weather/api/issues)
+[![Coverage Status](https://coveralls.io/repos/easy-weather/api/badge.svg)](https://coveralls.io/r/easy-weather/api)
 [![Codacy Badge](https://www.codacy.com/project/badge/459d2c5aae044408ba2cbe799ae6b216)](https://www.codacy.com/app/jeffhann/easy-weather-api)
 [![Build Status](https://travis-ci.org/easy-weather/api.svg?branch=master)](https://travis-ci.org/easy-weather/api)
 [![Dependency Status](https://david-dm.org/easy-weather/api.svg)](https://david-dm.org/easy-weather/api)
-[![GitHub license](https://img.shields.io/github/license/fear-the-dice/auth.svg)]()
+[![GitHub license](https://img.shields.io/github/license/easy-weather/api.svg)]()
 
 Easy Weather API V2
 ====================
