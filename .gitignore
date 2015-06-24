@@ -10,6 +10,7 @@ lib-cov
 *.sublime-workspace
 *.json
 .env
+*.sh
 node_modules/
 
 pids

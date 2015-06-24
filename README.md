@@ -6,16 +6,83 @@
 [![Dependency Status](https://david-dm.org/easy-weather/api.svg)](https://david-dm.org/easy-weather/api)
 [![GitHub license](https://img.shields.io/github/license/easy-weather/api.svg)]()
 
-Easy Weather API V2
-====================
+#Easy Weather API
+> The Easy Weather (http://weather.keepiteasy.net/) API powers our weather service that inclides a website, a Chrome application, and an Android app.
 
-Easy Weather (http://weather.keepiteasy.net/) is my pet project, and currently consists of an HTML5 Web App built in Backbone powered by an outdated PHP Rest service and Weather Underground. This specifically is a complete re-write using Node JS.
-
+##Setup
 Run 'npm install' to get all the necessary Node Modules installed, and then sign up with Weather Underground for an API key and create a .env file like below
 
 		WU_API=KEYGOESHERE
 
-Once that is setup you can run it like any other Node app and visit http://localhost:5000/forecast/44.7315035/-63.659654/ or http://localhost:5000/conditions/44.7315035/-63.659654/ to test.
+##API
+Full API documentation is avaliable at [weather.keepiteasy.net/api](http://weather.keepiteasy.net/apo/). [Apiary](https://apiary.io/) is coming soon.
+
+###Conditions [/conditions/{lat}/{long}]
+
++ Parameters 
+    + lat: `44.7323294` (string), required  - lattitude
+    + long: `-63.65548210000001` (string), required  - longitude
+
+####Current Conditions [GET]
+
++ Response 200
+    + Body
+    
+            {
+                "city": "Bedford",
+                "state": "Nova Scotia",
+                "icon": "cloudy",
+                "temp": 290.15,
+                "temp_c": "17",
+                "temp_f": "63",
+                "feelslike": "17",
+                "feelslike_c": "17",
+                "feelslike_f": "63",
+                "humidity": "94%",
+                "UV": "2",
+                "visibility": "24.1",
+                "visibility_ki": "24.1",
+                "visibility_mi": "15.0",
+                "precip": "0.0",
+                "precip_metric": "0.0",
+                "precip_in": "0.00",
+                "windchill": "NA",
+                "windchill_c": "NA",
+                "windchill_f": "NA",
+                "time": "LastUpdatedonJune24 10: 00AMADT"
+            }
+        
+###Forecast [/forecast/{lat}/{long}]
+
++ Parameters 
+    + lat: `44.7323294` (string), required  - lattitude
+    + long: `-63.65548210000001` (string), required  - longitude
+
+####Future Forecast [GET]
+
++ Response 200
+    + Body
+    
+            [
+                {
+                    "day": "Thursday",
+                    "icon": "clear",
+                    "text": "Generally sunny. High 23C. Winds WNW at 15 to 30 km/h.",
+                    "text_f": "Plentiful sunshine. High 73F. Winds WNW at 10 to 20 mph."
+                },
+                {
+                    "day": "Friday",
+                    "icon": "clear",
+                    "text": "Generally sunny. High 23C. Winds WNW at 15 to 30 km/h.",
+                    "text_f": "Plentiful sunshine. High 73F. Winds WNW at 10 to 20 mph."
+                },
+                {
+                    "day": "Saturday",
+                    "icon": "clear",
+                    "text": "Generally sunny. High 23C. Winds WNW at 15 to 30 km/h.",
+                    "text_f": "Plentiful sunshine. High 73F. Winds WNW at 10 to 20 mph."
+                }
+            ]
 
 ##License
 This tool is protected by the [GNU General Public License v2](http://www.gnu.org/licenses/gpl-2.0.html).

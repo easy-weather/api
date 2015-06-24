@@ -1,0 +1,24 @@
+dry-run: null
+hookfiles: null
+sandbox: false
+server: node bin/app.js
+server-wait: 3
+init: false
+custom: {}
+names: false
+only: []
+reporter: apiary
+output: []
+header: []
+sorted: true
+user: null
+inline-errors: false
+details: true
+method: false
+color: true
+level: info
+timestamp: true
+silent: false
+path: []
+blueprint: apiary.apib
+endpoint: 'http://localhost:5000'
