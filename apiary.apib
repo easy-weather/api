@@ -1,0 +1,61 @@
+FORMAT: 1A   
+HOST: easyweather.herokuapp.com
+
+#Easy Weather
+
+#Group API
+
+##Conditions [/conditions/{lat}/{long}]
+
++ Parameters 
+    + lat: `44.7323294` (string), required  - lattitude
+    + long: `-63.65548210000001` (string), required  - longitude
+
+###Current Conditions [GET]
+
++ Response 200
+    + Body
+    
+            {
+                "city": "Bedford",
+                "state": "Nova Scotia",
+                "icon": "cloudy",
+                "temp": 290.15,
+                "temp_c": "17",
+                "temp_f": "63",
+                "feelslike": "17",
+                "feelslike_c": "17",
+                "feelslike_f": "63",
+                "humidity": "94%",
+                "UV": "2",
+                "visibility": "24.1",
+                "visibility_ki": "24.1",
+                "visibility_mi": "15.0",
+                "precip": "0.0",
+                "precip_metric": "0.0",
+                "precip_in": "0.00",
+                "windchill": "NA",
+                "windchill_c": "NA",
+                "windchill_f": "NA",
+                "time": "LastUpdatedonJune24 10: 00AMADT"
+            }
+        
+##Forecast [/forecast/{lat}/{long}]
+
++ Parameters 
+    + lat: `44.7323294` (string), required  - lattitude
+    + long: `-63.65548210000001` (string), required  - longitude
+
+###Future Forecast [GET]
+
++ Response 200
+    + Body
+    
+            [
+                {
+                    "day": "Thursday",
+                    "icon": "clear",
+                    "text": "Generally sunny. High 23C. Winds WNW at 15 to 30 km/h.",
+                    "text_f": "Plentiful sunshine. High 73F. Winds WNW at 10 to 20 mph."
+                }
+            ]
